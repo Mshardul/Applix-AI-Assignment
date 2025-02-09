@@ -27,8 +27,8 @@
         - Apply regularization (e.g., standardizing date formats, normalizing numerical values). ✅
     - Store Data in Database: ✅
         - Use PostgreSQL/MySQL for relational data or MongoDB for flexible schema. ✅
-    - Perform Analysis: 
-        - Calculate summary statistics (mean, median, trends).
+    - Perform Analysis: ✅
+        - Calculate summary statistics (mean, median, trends). ✅
         - Perform time-based aggregations (daily, weekly, monthly).
     - API Endpoints:
         - Endpoint to upload and process data. ✅
