@@ -11,7 +11,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://afflix-ai-assessment-by-shardul.netlify.app"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
     allow_headers=["*"],  # Allow all headers
@@ -21,4 +21,3 @@ app.add_middleware(
 app.include_router(upload_router, prefix="/upload", tags=["Upload"])
 app.include_router(dummy_data_router, prefix="/dummy_data", tags=["API"])
 app.include_router(retrieve_router, prefix="/retrieve", tags=["API"])
-
