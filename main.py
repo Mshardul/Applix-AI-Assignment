@@ -1,5 +1,8 @@
+# External Libraries
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+# Internal Project Routers 
 from routes.upload import router as upload_router
 from routes.dummy_data import router as dummy_data_router
 from routes.retrieve import router as retrieve_router
@@ -8,7 +11,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Allow React frontend
+    allow_origins=["http://localhost:3000", "https://afflix-ai-assessment-by-shardul.netlify.app"],
     allow_credentials=True,
     allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
     allow_headers=["*"],  # Allow all headers
