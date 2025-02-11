@@ -8,18 +8,18 @@
 
 ### Frontend:
 - Technology Stack: React (or Angular/Vue.js) for the web portal. ✅
-- Features: ❌
+- Features: ✅
     - File Upload Component: Allow users to upload Excel/CSV files. ✅
     - Data Table: Display the cleaned data. ✅
-    - Interactive Charts: ❌
+    - Interactive Charts: ✅
         - Line chart for trends over time. ✅
-        - Other visualizations (e.g., bar or scatter plots) for insights. ❌
+        - Other visualizations (e.g., bar or scatter plots) for insights. ✅
     - Time Delta Selection: ✅
         - Dropdown or date-picker range to filter the displayed data by a specific time range. ✅
 
 ### Backend:
 - Technology Stack: Python (FastAP| / Flask / Django). ✅
-- Features: ❌
+- Features: ✅
     - Parse and Validate Uploaded Files: ✅
         - Use libraries like pandas (Python) for parsing. ✅
     - Data Cleaning: ✅
@@ -30,17 +30,17 @@
     - Perform Analysis: ✅
         - Calculate summary statistics (mean, median, trends). ✅
         - Perform time-based aggregations (daily, weekly, monthly).
-    - API Endpoints:
+    - API Endpoints: ✅
         - Endpoint to upload and process data. ✅
         - Endpoint to fetch cleaned and analyzed data for frontend charts. ✅
         - Endpoint to filter data based on time delta. ✅
 ### Database:
-- Schema: ✅
-    - Raw Data Table:
-        - Store raw data for reference.
+- Schema: ❌
+    - Raw Data Table: ✅
+        - Store raw data for reference. ✅
     - Cleaned Data Table: ✅
         - Store cleaned and transformed data. ✅
-    - Analysis Results Table: 
+    - Analysis Results Table: ❌
         - Store computed metrics like trends, averages, etc.
 
 ### Deliverables:
@@ -60,35 +60,46 @@
 
 ## Dependencies
 - **Frontend:** `React`, `Material UI`, `Axios`
-- **Backend:** `FastAPI`, `Pandas`, `Motor` (`MongoDB` client for Python), and `Uvicorn`.
+- **Backend:** `FastAPI`, `Pandas`, `PyMongo` (`MongoDB` client for Python), and `Uvicorn`.
 
 ## Frontend Development
 
-### Flow
+### Actions
 - Update Data
     - Upload the file
     - Send file to Backend API
-    - Show upload proogress
+    - Show upload status - Success / Failed
 - Visualize Data
     - Fetch cleaned data from the backend.
-    - Show cleaned data in tabular form
-    - Visualize data in an Interactive Chart
-        - Date-picker to filter data dynamically.
-- Export Data
-    - Implement a CSV/Excel download button.
-    - In case of any filter, just download the Filtered data. Otherwise, download the entire data.
+    - Show cleaned data as follows
+      - Chart Visualization (Line, Bar, Radar)
+      - Values Table (Cleaned Value Individually)
+      - Statistics Table (`Mean`, `Median`, `Mode`, `Min`, `Max`, `Trend`)
+- Filter Data
+    - Data can be filtered based on a DateTime picker Modal.
+    - The data in all 3 components, updates based on the filter applied.
+- Auto-Refresh Data
+    - Auto-Refresh Data for the given time frame every 60 seconds.
+    - Displays the number of seconds left for next auto-refresh.
+    - Refreshes the data in all 3 visualization components (1 chart and 2 tables).
 
 ### Components
+- Data Filter Component
+    - `Start Date Time Picker` and `End Date Time Picker`.
+    - Filters data based on the dates provided.
 - File Upload Component
     - Accept only .csv/.xlsx files.
     - Enforce 10MB file size limit.
     - Send the file to the backend API.
-- Data Table Component
-    - Use `Material UI` Table to display the parsed data.
-- Interactive Chart Component
+- Chart Component
     - Use `Chart.js` to create
-        - `Line chart` (trends over time).
-        - `Bar chart` or scatter plot for insights.
+        - `Line chart`
+        - `Bar chart`
+        - `Radar fhart`
+- Data Table Component
+    - `Material UI Table` to display the parsed data.
+- Statistics Table Component
+    - `Material UI Table` to display the Statistics
 
 ## Backend Development
 
@@ -98,11 +109,17 @@
     - Use Pandas to parse the files.
     - Save files temporarily in local storage.
     - Read, clean, and convert to JSON format.
-    - Store raw and cleaned data in MongoDB.
-- GET /get-data
-- GET /get-stats
-- POST /get-filtered-data
-- GET /export
+    - Store raw and cleaned data in Database.
+- GET /dummy_data
+    - Generates 50 random temperature entries.
+    - Store these entries in a csv file.
+    - These files can be used to upload as dummy data.
+- GET /retrieve
+    - Retrieve procesed data from Database.
+    - This data is structured for 3 different components
+        - Chart Visualization
+        - Values Table
+        - Statistics Table
 
 ### Data Processing
 - Clean null/empty values.
@@ -113,9 +130,21 @@
 
 ## Database Setup
 
-## Hosting
+### Database & Collections
+- `TemperatureMonitoring`
+    - `temperature_data`: stores processed data. each temperature reading as an entry.
+    ```
+    _id | time | temperature | location | created_at |
+    ```
+    - `temperature_data_raw`
+    ```
+    | _id | filename | created_at | uploaded_at | raw_data
+    ```
+
+# Hosting
 - **Frontend:** `Netlify`
-- **Backend:** `PythonAnywhere`
+- **Backend:** `Railway.com`
 - **Database:** `MongoDB Atlas`
 
-
+# Run the App
+- visit: [this link](https://afflix-ai-assessment-by-shardul.netlify.app)
