@@ -16,6 +16,7 @@ async def get_temperature_data(
     Defaults to last 30 days if no dates are provided.
     Formats data for Chart.js.
     """
+    print("params: ", start_time, end_time)
     collection = database["temperature_data"]
 
     # Set default values if start_time and end_time are not provided

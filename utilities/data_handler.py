@@ -9,27 +9,35 @@ LOCATIONS = ["Delhi", "Mumbai", "Kolkata", "Chennai"]
 
 def stats_calculations(valid_temperatures):
     """ calculate statistics on an numpy array """
+    # default values
+    resp = {
+        "Mean": "N/A",
+        "Median": "N/A",
+        "Mode": "N/A",
+        "Min": "N/A",
+        "Max": "N/A",
+        "Trend": "N/A"
+    }
+    if len(valid_temperatures)==0:
+        return resp
+
     # Statistics Calculation
-    mean_temp = np.mean(valid_temperatures)
-    median_temp = np.median(valid_temperatures)
-    mode_temp = stats.mode(valid_temperatures, keepdims=True)[0][0]  # Extract mode value
-    min_temp = np.min(valid_temperatures)
-    max_temp = np.max(valid_temperatures)
+    resp["Mean"] = round(np.mean(valid_temperatures), 2)
+    resp["Median"] = round(np.median(valid_temperatures))
+    resp["Mode"] = round(stats.mode(valid_temperatures, keepdims=True)[0][0], 2)
+    resp["Min"] = round(np.min(valid_temperatures), 2)
+    resp["Max"] = round(np.max(valid_temperatures), 2)
 
     # Trend (Simple Linear Regression) Computation
-    x = np.arange(len(valid_temperatures))  # Time steps
-    slope, _ = np.polyfit(x, valid_temperatures, 1)  # Linear fit
-    trend = "Increasing" if slope > 0 else "Decreasing" if slope < 0 else "Stable"
+    try:
+        x = np.arange(len(valid_temperatures))  # Time steps
+        slope, _ = np.polyfit(x, valid_temperatures, 1)  # Linear fit
+        resp["Trend"] = "Increasing" if slope > 0 else "Decreasing" if slope < 0 else "Stable"
+    except np.linalg.LinAlgError:
+        resp["Trend"] = "N/A"
 
     # Return Response
-    return {
-        "Mean": round(mean_temp, 2),
-        "Median": round(median_temp, 2),
-        "Mode": round(mode_temp, 2),
-        "Min": round(min_temp, 2),
-        "Max": round(max_temp, 2),
-        "Trend": trend
-    }
+    return resp
 
 def structure_for_chart(data_loc_datasets, time_labels):
     """ strucutre temperature data for chart-friendly import """
