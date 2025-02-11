@@ -1,5 +1,7 @@
+""" Database Configuration """
+
+# Third Party Libraries Import
 from pymongo import MongoClient
-import os
 
 # MongoDB credentials
 MONGODB_USERNAME: str = "shardullingwal94"

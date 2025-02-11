@@ -4,7 +4,7 @@
 from fastapi import APIRouter, Query, HTTPException
 
 # Internal Project Imports
-from data import dummy_data
+from services import dummy_data
 from models.dummy_data import DummyDataResponse
 
 router = APIRouter()
