@@ -1,20 +1,30 @@
+""" Routers related to Data Retreival """
+
+# Third Party Libaries Import
+from datetime import datetime
 from fastapi import APIRouter, Query
 from pymongo import ASCENDING
-from datetime import datetime, timedelta
+
+# Internal Project Imports
 from config.database import database
+from models.retrieve import TemperatureDataResponse
 from utilities.data_handler import structure_for_frontend
 
 router = APIRouter()
 
-@router.get("/")
+@router.get("/", response_model=TemperatureDataResponse, summary="Retrieve Temperature Data")
 async def get_temperature_data(
-    start_time: int = Query(None, description="Start time in UNIX timestamp"),
-    end_time: int = Query(None, description="End time in UNIX timestamp")
+    start_time: int = Query(None, description="Start time as a UNIX timestamp"),
+    end_time: int = Query(None, description="End time as a UNIX timestamp")
 ):
     """
-    Retrieve temperature data between a given time range.
-    Defaults to last 30 days if no dates are provided.
-    Formats data for Chart.js.
+    - Retrieves temperature data between a given time range.
+    - Defaults to the last **30 days** if no time range is provided.
+
+    - Returns formatted data for
+       - Values Chart
+       - Values Table
+       - Statistics Table
     """
     print("params: ", start_time, end_time)
     collection = database["temperature_data"]

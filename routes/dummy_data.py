@@ -1,15 +1,22 @@
-from fastapi import APIRouter, HTTPException
-import shutil
+""" Routers related to Dummy Data """
 
-from services.process import process_temperature_data
-from config import database
-from utilities import file_handler
+# Third Party Libaries Import
+from fastapi import APIRouter, Query, HTTPException
+
+# Internal Project Imports
 from data import dummy_data
+from models.dummy_data import DummyDataResponse
 
 router = APIRouter()
 
-@router.get("/")
-async def get_dummy_data(start_time: int=-1, end_time: int=-1):
+@router.get("/", response_model=DummyDataResponse, summary="Generate Dummy Data")
+async def get_dummy_data(
+    start_time: int = Query(-1, description="Start time as a UNIX timestamp"),
+    end_time: int = Query(-1, description="End time as a UNIX timestamp")
+):
+    """
+    Generates dummy temperature data within the given time range.
+    """
     try:
         dummy_data.generate_temperature_data(start_time, end_time)
         return {
@@ -17,4 +24,4 @@ async def get_dummy_data(start_time: int=-1, end_time: int=-1):
             "message": "File created successfully",
         }
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e

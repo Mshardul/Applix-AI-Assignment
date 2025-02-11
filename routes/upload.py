@@ -1,10 +1,15 @@
-# External Libraries
-from datetime import datetime
-from fastapi import APIRouter, UploadFile, File, HTTPException
+""" Routers related to Data Upload """
+
+# Standard Libraries Import
 import shutil
 from typing import Optional
 
+# Third Party Libaries Import
+from datetime import datetime
+from fastapi import APIRouter, UploadFile, File, HTTPException
+
 # Internal Project Imports
+from models.upload import UploadResponse
 from repositories.processed_data import store_processed_data
 from repositories.raw_data import store_raw_data
 from services.process import process_temperature_data
@@ -12,12 +17,13 @@ from utilities import file_handler
 
 router = APIRouter()
 
-@router.post("/")
+@router.post("/", response_model=UploadResponse, summary="Upload Temperature Data")
 async def upload_temperature_data(file: UploadFile = File(...)):
     """
-    1. Receive CSV / XLSX files
-    2. Parse and Clean the Data
-    3. Store Cleaned-up Data in MongoDB.
+    - Uploads and processes a CSV/XLSX file containing temperature data.
+       - Parses & cleans the data
+       - Stores processed data in MongoDB
+       - Stores raw data in MongoDB
     """
     entry_time: int = int(datetime.utcnow().timestamp())
 
@@ -52,7 +58,7 @@ async def upload_temperature_data(file: UploadFile = File(...)):
             processed_data_stored = bool(store_processed_data(processed_data=data))
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
     finally:
         # Cleanup file after processing
         if file_path.exists():
