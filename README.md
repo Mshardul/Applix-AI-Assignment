@@ -147,4 +147,14 @@
 - **Database:** `MongoDB Atlas`
 
 # Run the App
+## Over the Internet
 - visit: [this link](https://afflix-ai-assessment-by-shardul.netlify.app)
+## Locally
+- Backend
+  ```bash
+  uvicorn main:app --host 127.0.0.1 --port 8000 --reload
+  ```
+- Frontend
+  ```bash
+  npm start
+  ```
